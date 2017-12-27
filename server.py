@@ -1,30 +1,3 @@
-# import socket
-#
-# HOST = socket.gethostname()
-# PORT = 8012
-#
-# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# s.bind((HOST, PORT))
-# s.listen(5)
-#
-# print ('Server start at: %s:%s' %(HOST, PORT))
-# print ('wait for connection...')
-#
-# while True:
-#     conn, addr = s.accept()
-#     print ('Connected by ', addr)
-#
-#     while True:
-#         data = conn.recv(1024)
-#         print (data)
-#
-#         conn.send("server received you message.".encode())
-#
-# # conn.close()
-
-
-
-
 import socket
 import threading
 
@@ -56,7 +29,7 @@ def main():
     # create an INET, STREAMing socket
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # bind the socket to a public host, and a well-known port
-    serversocket.bind(('127.0.0.1', 23012))
+    serversocket.bind(('192.168.2.161', 23014))
     # become a server socket
     serversocket.listen(5)
 
