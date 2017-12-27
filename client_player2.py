@@ -3,12 +3,18 @@ import threading
 
 direction = 'none'
 direction2 = 'none'
+foodPos = [-1, -1]
 
 def start(s):
     import pygame
     import sys
     import random
     import time
+
+    global direction
+    global direction2
+    global foodPos
+
 
     # check for initializing errors
     check_errors = pygame.init()  # (success, errors)
@@ -20,7 +26,7 @@ def start(s):
 
     # Play surface
     playSurface = pygame.display.set_mode((720, 460))
-    pygame.display.set_caption('Snake game! Player1')
+    pygame.display.set_caption('Snake game! Player2')
 
     # colors
     red = pygame.Color(255, 0, 0)  # gameover
@@ -34,17 +40,18 @@ def start(s):
     fpsController = pygame.time.Clock()
 
     # important varibles
-    snakePos = [100, 50]  # snake1 position
-    snakePos2 = [100, 80]
-    snakeBody = [[100, 50], [90, 50], [80, 50], [70, 50], [60, 50], [50, 50]]
-    snakeBody2 = [[100, 80], [90, 80], [80, 80], [70, 80], [60, 80], [50, 80]]
+    snakePos = [100, 80]  # snake1 position
+    snakePos2 = [100, 50]
+    snakeBody = [[100, 80], [90, 80], [80, 80], [70, 80], [60, 80], [50, 80]]
+    snakeBody2 = [[100, 50], [90, 50], [80, 50], [70, 50], [60, 50], [50, 50]]
 
-    foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]  # food position
+    # foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]  # food position
+
+    # foodPos = food
     foodSpawn = True
 
 
-    global direction
-    global direction2
+
     changeTo = direction
 
 
@@ -78,7 +85,7 @@ def start(s):
         Ssurf = scoreFont.render('Player1 Score : {0}     Player2 Score : {1}'.format(score, score2), True, black)
         Srect = Ssurf.get_rect()
         if choice == 1:
-            Srect.midtop = (80, 10)
+            Srect.midtop = (200, 10)
         else:
             Srect.midtop = (360, 120)
         playSurface.blit(Ssurf, Srect)
@@ -153,8 +160,9 @@ def start(s):
             snakeBody2.pop()
 
         # food spawn
-        if foodSpawn == False:
-            foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]
+        # if foodSpawn == False:
+            # foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]
+            # foodPos = food
         foodSpawn = True
 
         # background
@@ -170,8 +178,9 @@ def start(s):
             pygame.draw.rect(playSurface, blue, snakeRect)
 
         # draw food
-        foodRect = pygame.Rect(foodPos[0], foodPos[1], 10, 10)
-        pygame.draw.rect(playSurface, brown, foodRect)
+        if foodPos[0] != -1 and foodPos[1] != -1:
+            foodRect = pygame.Rect(foodPos[0], foodPos[1], 10, 10)
+            pygame.draw.rect(playSurface, brown, foodRect)
 
         # boundaries
         if snakePos[0] > 710 or snakePos[0] < 0:
@@ -198,29 +207,36 @@ def start(s):
         # update frame
         showScore()
         pygame.display.flip()
-        fpsController.tick(5)
+        fpsController.tick(15)
 
 def recv_message(clientsocket):
     global direction2
+    global foodPos
 
     while True:
         try:
             message = clientsocket.recv(1024)
             # if message.decode('utf-8') == 'brian: start':
-                # start()
+            #     start(clientsocket)
                 # threading.Thread(target=start).start()
 
-            if message.decode('utf-8') == 'andrew: RIGHT':
+            if message.decode('utf-8') == 'brian: RIGHT':
                 direction2 = 'RIGHT'
 
-            if message.decode('utf-8') == 'andrew: LEFT':
+            if message.decode('utf-8') == 'brian: LEFT':
                 direction2 = 'LEFT'
 
-            if message.decode('utf-8') == 'andrew: UP':
+            if message.decode('utf-8') == 'brian: UP':
                 direction2 = 'UP'
 
-            if message.decode('utf-8') == 'andrew: DOWN':
+            if message.decode('utf-8') == 'brian: DOWN':
                 direction2 = 'DOWN'
+
+            if message.decode('utf-8')[7] == 'x':
+                foodPos[0] = int(message.decode('utf-8')[9:])
+
+            if message.decode('utf-8')[7] == 'y':
+                foodPos[1] = int(message.decode('utf-8')[9:])
 
         except:
             break
@@ -245,10 +261,11 @@ def main():
 
     # threading.Thread(target=start).start()
     threading.Thread(target=recv_message, args=(s,)).start()
+
     start(s)
 
     recv_message(s)
-
+    # start(s)
 
     # while True:
     #     message = input()

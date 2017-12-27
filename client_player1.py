@@ -40,6 +40,11 @@ def start(s):
     snakeBody2 = [[100, 80], [90, 80], [80, 80], [70, 80], [60, 80], [50, 80]]
 
     foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]  # food position
+    s.send(str.encode('x:'+str(foodPos[0])))
+    time.sleep(0.1)
+    s.send(str.encode('y:' + str(foodPos[1])))
+    time.sleep(0.1)
+    s.send(str.encode('start'))
     foodSpawn = True
 
 
@@ -78,7 +83,7 @@ def start(s):
         Ssurf = scoreFont.render('Player1 Score : {0}     Player2 Score : {1}'.format(score, score2), True, black)
         Srect = Ssurf.get_rect()
         if choice == 1:
-            Srect.midtop = (80, 10)
+            Srect.midtop = (200, 10)
         else:
             Srect.midtop = (360, 120)
         playSurface.blit(Ssurf, Srect)
@@ -141,6 +146,7 @@ def start(s):
         snakeBody.insert(0, list(snakePos))
         if snakePos[0] == foodPos[0] and snakePos[1] == foodPos[1]:
             score += 1
+            time.sleep(0.3)
             foodSpawn = False
         else:
             snakeBody.pop()
@@ -148,6 +154,7 @@ def start(s):
         snakeBody2.insert(0, list(snakePos2))
         if snakePos2[0] == foodPos[0] and snakePos2[1] == foodPos[1]:
             score2 += 1
+            time.sleep(0.3)
             foodSpawn = False
         else:
             snakeBody2.pop()
@@ -155,6 +162,9 @@ def start(s):
         # food spawn
         if foodSpawn == False:
             foodPos = [random.randrange(1, 72) * 10, random.randrange(1, 46) * 10]
+            s.send(str.encode('x:' + str(foodPos[0])))
+            time.sleep(0.1)
+            s.send(str.encode('y:' + str(foodPos[1])))
         foodSpawn = True
 
         # background
@@ -198,7 +208,7 @@ def start(s):
         # update frame
         showScore()
         pygame.display.flip()
-        fpsController.tick(5)
+        fpsController.tick(15)
 
 def recv_message(clientsocket):
     global direction2
@@ -245,6 +255,11 @@ def main():
 
     # threading.Thread(target=start).start()
     threading.Thread(target=recv_message, args=(s,)).start()
+    # begin = input('輸入start')
+    # if begin == 'start':
+        # s.send(str.encode(begin))
+        # start(s)
+        # s.send(str.encode(begin))
     start(s)
 
     recv_message(s)

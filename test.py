@@ -20,7 +20,7 @@ def start(s):
 
     # Play surface
     playSurface = pygame.display.set_mode((720, 460))
-    pygame.display.set_caption('Snake game! Player1')
+    pygame.display.set_caption('Snake game! Player2')
 
     # colors
     red = pygame.Color(255, 0, 0)  # gameover
@@ -210,16 +210,16 @@ def recv_message(clientsocket):
                 # start()
                 # threading.Thread(target=start).start()
 
-            if message.decode('utf-8') == 'andrew: RIGHT':
+            if message.decode('utf-8') == 'brian: RIGHT':
                 direction2 = 'RIGHT'
 
-            if message.decode('utf-8') == 'andrew: LEFT':
+            if message.decode('utf-8') == 'brian: LEFT':
                 direction2 = 'LEFT'
 
-            if message.decode('utf-8') == 'andrew: UP':
+            if message.decode('utf-8') == 'brian: UP':
                 direction2 = 'UP'
 
-            if message.decode('utf-8') == 'andrew: DOWN':
+            if message.decode('utf-8') == 'brian: DOWN':
                 direction2 = 'DOWN'
 
         except:
