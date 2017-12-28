@@ -2,7 +2,7 @@
 practicing data communication skill by a snake game
 
 
-remember to update the ip and port
+remember to update the ip and the port
 
 steps:
   1. start server.py
