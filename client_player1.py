@@ -101,15 +101,23 @@ def start(s):
                 if event.key == pygame.K_RIGHT or event.key == ord('d'):
                     changeTo = 'RIGHT'
                     s.send(str.encode(changeTo))
+                    if direction == 'none':
+                        time.sleep(0.08)
                 if event.key == pygame.K_LEFT or event.key == ord('a'):
                     changeTo = 'LEFT'
                     s.send(str.encode(changeTo))
+                    if direction == 'none':
+                        time.sleep(0.08)
                 if event.key == pygame.K_UP or event.key == ord('w'):
                     changeTo = 'UP'
                     s.send(str.encode(changeTo))
+                    if direction == 'none':
+                        time.sleep(0.08)
                 if event.key == pygame.K_DOWN or event.key == ord('s'):
                     changeTo = 'DOWN'
                     s.send(str.encode(changeTo))
+                    if direction == 'none':
+                        time.sleep(0.08)
                 if event.key == pygame.K_ESCAPE:
                     pygame.event.post(pygame.event.Event(pygame.QUIT))
 
@@ -146,7 +154,7 @@ def start(s):
         snakeBody.insert(0, list(snakePos))
         if snakePos[0] == foodPos[0] and snakePos[1] == foodPos[1]:
             score += 1
-            time.sleep(0.3)
+            time.sleep(0.1)
             foodSpawn = False
         else:
             snakeBody.pop()
@@ -154,7 +162,7 @@ def start(s):
         snakeBody2.insert(0, list(snakePos2))
         if snakePos2[0] == foodPos[0] and snakePos2[1] == foodPos[1]:
             score2 += 1
-            time.sleep(0.3)
+            time.sleep(0.1)
             foodSpawn = False
         else:
             snakeBody2.pop()
@@ -246,7 +254,7 @@ def main():
 
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('192.168.2.28', 23014))
+    s.connect(('172.24.30.107', 23014))
 
     s.send(str.encode(nickname))
 
