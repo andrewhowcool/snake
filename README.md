@@ -8,7 +8,7 @@ steps:
   1. start server.py
   
   2. start client_player2（player name：andrew）
-  
+  </br>
   3. start client_player1（player name：brian）
 
 
